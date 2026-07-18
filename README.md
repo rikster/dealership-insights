@@ -40,8 +40,8 @@ On PowerShell, use `Copy-Item .env.example .env`. Open `http://localhost:3000`; 
 | `WEB_ORIGIN` | Comma-separated CORS allowlist | `http://localhost:3000` |
 | `NEXT_PUBLIC_API_BASE_URL` | Browser-visible API origin | `http://localhost:3001` |
 | `REQUEST_TIMEOUT_MS` | Overall bounded deadline | `8000` |
-| `INVENTORY_MAX_AGE_SECONDS` | Inventory freshness threshold | `300` (5 minutes) |
-| `VALUATION_MAX_AGE_SECONDS` | Valuation freshness threshold | `3600` (1 hour) |
+| `INVENTORY_MAX_AGE_SECONDS` | Demo inventory threshold | `2592000` (30 days) |
+| `VALUATION_MAX_AGE_SECONDS` | Demo valuation threshold | `2592000` (30 days) |
 
 Never prefix a secret with `NEXT_PUBLIC_`. The application does not log model reasoning, secrets, connection strings, or unrestricted rows.
 
@@ -57,7 +57,7 @@ pnpm db:refresh-freshness
 
 The idempotent seed creates 5 regions, 50 dealerships, 3 demo principals, 50,000 active vehicles, valuations, catalogue data, deterministic ties, a zero valuation, and missing catalogue edges. Run `db:seed` twice to prove idempotence. `db:refresh-freshness` makes timestamp-based demo data current without reseeding.
 
-Refresh timestamps immediately before a reviewer session. The `Stale valuation` scenario deterministically exceeds the configured threshold and demonstrates fail-closed behavior without making freshness policy browser-editable.
+The normal reviewer path uses an explicit 30-day demo freshness policy so seeded data does not expire during a presentation. `Stale inventory` and `Stale valuation` deterministically exceed the active thresholds and demonstrate fail-closed behavior without making freshness policy browser-editable.
 
 ## Verification
 
@@ -69,7 +69,7 @@ pnpm build
 pnpm replay
 ```
 
-The Phase 10 local gate has 34 passing tests, including 13 structured graph golden cases. The replay reports local mock/in-memory timings only and is not a production SLA. Database integration execution requires `DATABASE_URL`; live model execution requires an OpenAI account with available API quota, `OPENAI_API_KEY`, and `MODEL_MODE` other than `mock`.
+The current local gate has 37 passing tests, including 14 structured graph golden cases. The replay reports local mock/in-memory timings only and is not a production SLA. Database integration execution requires `DATABASE_URL`; live model execution requires an OpenAI account with available API quota, `OPENAI_API_KEY`, and `MODEL_MODE` other than `mock`.
 
 ## Repository map
 
@@ -108,8 +108,7 @@ The production deployment is live at [web-eight-ebon-57.vercel.app](https://web-
 2. Run stock ageing; show that only inventory was called and every returned item has evidence.
 3. Run market pricing; show both fresh sources and the code-calculated delta.
 4. Run regional model ageing; show catalogue as one lazy batch and the deterministic tie-break.
-5. Select stale valuation, then forbidden site; show structured refusals and that forbidden scope made zero source calls.
+5. Select stale inventory, stale valuation, then forbidden site; show structured refusals and that forbidden scope made zero source calls.
 6. Finish with `pnpm test` and `docs/BUILD_LOG.md`.
 
 See [architecture](docs/ARCHITECTURE.md), [decisions](docs/DECISIONS.md), and [build evidence](docs/BUILD_LOG.md).
-
