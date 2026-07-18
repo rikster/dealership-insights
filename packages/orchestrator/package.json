@@ -1,0 +1,17 @@
+{
+  "name": "@autograb/orchestrator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "build": "tsc --noEmit", "typecheck": "tsc --noEmit", "test": "vitest run --passWithNoTests" },
+  "dependencies": {
+    "@autograb/contracts": "workspace:*",
+    "@autograb/db": "workspace:*",
+    "@autograb/domain": "workspace:*",
+    "@langchain/langgraph": "latest",
+    "openai": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": { "@types/node": "latest", "typescript": "~6.0.2", "vitest": "latest" }
+}

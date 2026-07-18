@@ -1,0 +1,34 @@
+{
+  "name": "autograb-bounded-orchestrator",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.6.5",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @autograb/api --filter @autograb/web dev",
+    "build": "pnpm -r build",
+    "build:api:vercel": "pnpm --filter @autograb/api build && node scripts/build-api-vercel.mjs",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "replay": "tsx scripts/replay.ts",
+    "db:generate": "pnpm --filter @autograb/db generate",
+    "db:migrate": "pnpm --filter @autograb/db migrate",
+    "db:seed": "pnpm --filter @autograb/db seed",
+    "db:refresh-freshness": "pnpm --filter @autograb/db refresh-freshness"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@types/node": "latest",
+    "esbuild": "^0.28.1",
+    "eslint": "latest",
+    "next": "^16.2.10",
+    "tsx": "latest",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "latest",
+    "vitest": "latest"
+  }
+}

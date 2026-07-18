@@ -1,0 +1,23 @@
+{
+  "name": "@autograb/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "generate": "drizzle-kit generate",
+    "migrate": "tsx --env-file=../../.env src/migrate.ts",
+    "seed": "tsx --env-file=../../.env src/seed.ts",
+    "refresh-freshness": "tsx --env-file=../../.env src/refresh-freshness.ts"
+  },
+  "dependencies": {
+    "@autograb/contracts": "workspace:*",
+    "@neondatabase/serverless": "latest",
+    "drizzle-orm": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": { "@types/node": "latest", "drizzle-kit": "latest", "tsx": "latest", "typescript": "~6.0.2", "vitest": "latest" }
+}
