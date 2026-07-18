@@ -6,6 +6,7 @@ playwright-report/
 test-results/
 .vercel/
 api/bundle.mjs
+api/bundle.d.mts
 *.tsbuildinfo
 .env*
 !.env.example

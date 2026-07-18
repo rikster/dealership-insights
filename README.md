@@ -69,7 +69,7 @@ pnpm build
 pnpm replay
 ```
 
-The Phase 8 local gate has 33 passing tests, including 13 structured graph golden cases. The replay reports local mock/in-memory timings only and is not a production SLA. Database integration execution requires `DATABASE_URL`; live model execution requires an OpenAI account with available API quota, `OPENAI_API_KEY`, and `MODEL_MODE` other than `mock`.
+The Phase 10 local gate has 34 passing tests, including 13 structured graph golden cases. The replay reports local mock/in-memory timings only and is not a production SLA. Database integration execution requires `DATABASE_URL`; live model execution requires an OpenAI account with available API quota, `OPENAI_API_KEY`, and `MODEL_MODE` other than `mock`.
 
 ## Repository map
 
@@ -100,7 +100,7 @@ pnpm dlx vercel --cwd apps/api --prod
 pnpm dlx vercel --cwd apps/web --prod
 ```
 
-Deployment was not attempted during Phase 8 because Vercel account access, database credentials, and model credentials were unavailable. The commands above are the exact handoff sequence once those external prerequisites are supplied.
+The production deployment is live at [web-eight-ebon-57.vercel.app](https://web-eight-ebon-57.vercel.app), backed by [autograb-api.vercel.app](https://autograb-api.vercel.app). Production uses live Neon data and `MODEL_MODE=live` through the OpenAI Responses API. The deployed request deadline is 20 seconds (with a 30-second function cap) to accommodate live-model latency; the local default remains 8 seconds.
 
 ## Five-minute reviewer demo
 
