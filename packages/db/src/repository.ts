@@ -195,13 +195,15 @@ export class InMemoryRepository implements AutoGrabRepository {
   async getValuations(scope: AuthorisedScope, ids: string[] | null, context: QueryContext) {
     assertScope(scope); checkSignal(context.signal); this.calls.valuation += 1;
     const allowedVehicles = new Set(this.data.inventory.filter((row) => scope.dealershipIds.includes(row.dealershipId)).map((row) => row.vehicleId));
-    const rows = this.data.valuations.filter((row) => (ids === null || ids.includes(row.vehicleId)) && allowedVehicles.has(row.vehicleId)).slice(0, context.maxRows);
+    const requestedVehicles = ids === null ? null : new Set(ids);
+    const rows = this.data.valuations.filter((row) => (requestedVehicles === null || requestedVehicles.has(row.vehicleId)) && allowedVehicles.has(row.vehicleId)).slice(0, context.maxRows);
     return this.keepFresh ? rows.map((row) => ({ ...row, ...this.currentTimestamps() })) : rows;
   }
   async getCatalogue(scope: AuthorisedScope, ids: string[], context: QueryContext) {
     assertScope(scope); checkSignal(context.signal); this.calls.catalogue += 1;
     const allowedVehicles = new Set(this.data.inventory.filter((row) => scope.dealershipIds.includes(row.dealershipId)).map((row) => row.vehicleId));
-    const rows = this.data.catalogue.filter((row) => ids.includes(row.vehicleId) && allowedVehicles.has(row.vehicleId)).slice(0, context.maxRows);
+    const requestedVehicles = new Set(ids);
+    const rows = this.data.catalogue.filter((row) => requestedVehicles.has(row.vehicleId) && allowedVehicles.has(row.vehicleId)).slice(0, context.maxRows);
     return this.keepFresh ? rows.map((row) => ({ ...row, ...this.currentTimestamps() })) : rows;
   }
   async persistAudit(record: AuditRecord) { this.calls.audit += 1; this.audits.push(structuredClone(record)); }

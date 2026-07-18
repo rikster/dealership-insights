@@ -1,6 +1,16 @@
-# Build log
+# Build and verification record
 
 All times are Australia/Sydney. Credential-dependent checks are explicitly distinguished from local gates.
+
+## Summary
+
+- **Implemented:** A TypeScript dealership-insights workflow, interactive reviewer site, Fastify API, scoped data layer, deterministic analytics and source-backed answer presentation.
+- **Verified:** The current local gate passes lint, all six typechecks and 40/40 automated tests; the production build and 30-query synthetic replay are recorded below.
+- **Current result:** The three supported dealership questions complete in local deterministic mode and in the recorded live Neon/OpenAI production smoke tests.
+- **Outside the prototype:** Production identity, writes, CRM and transaction outcomes, generated SQL, memory and open-ended tool use.
+- **Reproduce:** Follow the README quick start, then run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm replay`.
+
+## Detailed build record (appendix)
 
 ## Phase 0 — discovery and baseline
 
@@ -126,3 +136,32 @@ All times are Australia/Sydney. Credential-dependent checks are explicitly disti
 - Added a bounded `stale-inventory` scenario beside the existing `stale-valuation` path. Each fault is injected at the source-adapter boundary exactly 60 seconds beyond its configured threshold.
 - Added domain, graph, and API regression coverage. Final local gate: lint passed; all six projects typechecked; 37/37 tests passed; Next.js and all TypeScript builds passed.
 - Updated both non-secret Vercel production freshness variables and redeployed the API and web projects. Production smoke verified that the default stock-ageing query returns `answered` with 645 vehicles and a 2,592,000-second limit, while `stale-inventory` returns `refused` at 2,592,060 seconds.
+
+## Phase 12 — complete regional reads and pre-analytics source gating
+
+- Date: 2026-07-18 AEST.
+- Raised the explicit per-source ceiling from 5,000 to 10,000 rows so each 10-site demo region is evaluated in full. Adapters request one sentinel row beyond the ceiling and return `budget_exceeded` rather than silently truncating a larger scope.
+- Moved required-source availability and freshness validation ahead of catalogue fan-out and analytics. Stale or unavailable required sources retain auditable source metadata but now return zero metrics and zero evidence.
+- Expanded the existing 14-case graph regression matrix without changing the advertised test count: the regional case proves all 10,000 rows influence the ranking and that a 10,001-row scope refuses before catalogue access; stale and timeout cases prove analytics is skipped.
+- Live local Neon + Responses smoke: regional model ageing returned `answered` from 10,000 inventory rows and 9,989 catalogue rows in 7.572 seconds; stale valuation returned `refused` with zero metrics and evidence in 2.677 seconds.
+- Final gate: lint passed; all six projects typechecked; 37/37 tests passed; Next.js and all TypeScript builds passed; synthetic replay answered 30/30 with 39 ms p50 and 91 ms p95.
+- Redeployed the API and web production projects. Production readiness remained `modelMode: live` and `dataMode: neon`; the regional query returned all 10,000 inventory rows and 9,989 catalogue rows in 10.473 seconds, while stale valuation refused with zero metrics/evidence in 3.099 seconds. The public UI exposes the new 10,000-row guardrail.
+
+## Phase 13 — customer-focused presentation pass
+
+- Date: 2026-07-18 AEST.
+- Reframed the site around useful dealership insights first, with the reliability controls presented as supporting evidence. Updated the hero, demo conditions, result labels, safeguard disclosure, prototype scope and closing discussion prompt.
+- Updated the README, architecture approach and decision language; added this record’s five-line summary; moved the completed implementation plan to `docs/archive/`; and added a concise reviewer email draft with public-link verification before sending.
+- Current local gate: lint passed; all six projects typechecked; 40/40 tests passed; Next.js and all TypeScript builds passed.
+- Synthetic replay: 30/30 answered in local in-memory/mock mode with 21 ms p50 and 32 ms p95. This is not a production SLA.
+- Deployment was not changed during this presentation pass; the live URL continues to show the previously deployed build until a new web/API deployment is performed.
+
+## Phase 14 — reviewer-experience completion and verification
+
+- Date: 2026-07-18 AEST.
+- Completed the remaining presentation details: expected access and source-availability conditions now use the amber attention treatment, the safeguards disclosure uses the agreed customer-facing wording, and primary reviewer documents avoid unnecessary defensive framing while retaining accurate internal statuses.
+- Replaced the outdated “receipt trail” social artwork with a site-specific card using the final navy/blue-violet palette and “supporting records” language; updated the page and Open Graph metadata to use the refreshed asset.
+- Verified the live demonstration, public repository, architecture and decision URLs with unauthenticated HTTP requests; all four returned HTTP 200.
+- Browser verification covered desktop and 390px mobile layouts, confirmed no horizontal overflow, opened the safeguards disclosure, resolved all four on-page anchor targets, exercised the access-limited scenario, and confirmed its computed warning colours (`#FFF3D9` and `#A66400`). No browser console errors were reported.
+- Final gate: lint passed; all six projects typechecked; 40/40 tests passed; Next.js and all TypeScript builds passed.
+- No email was sent, no repository visibility was changed, and no deployment was performed.

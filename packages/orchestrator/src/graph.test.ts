@@ -5,7 +5,7 @@ import { MockModelGateway } from "./model.js";
 import type { ModelGateway } from "./model.js";
 
 const now = new Date("2026-01-01T00:00:00.000Z");
-const options = (model: ModelGateway = new MockModelGateway()) => ({ model, now: () => now, requestTimeoutMs: 8_000, config: { inventoryMaxAgeSeconds: 300, valuationMaxAgeSeconds: 3600, maxSourceCalls: 6 as const, maxRows: 5_000, maxEvidence: 50 } });
+const options = (model: ModelGateway = new MockModelGateway()) => ({ model, now: () => now, requestTimeoutMs: 8_000, config: { inventoryMaxAgeSeconds: 300, valuationMaxAgeSeconds: 3600, maxSourceCalls: 6 as const, maxRows: 10_000, maxEvidence: 50 } });
 
 function setup(model: ModelGateway = new MockModelGateway()) {
   const repository = new InMemoryRepository(makeDemoData(now));
@@ -37,12 +37,46 @@ describe("bounded graph golden paths", () => {
   });
 
   it("answers regional model ageing with one lazy catalogue batch", async () => {
-    const { repository, orchestrator } = setup();
+    const data = makeDemoData(now);
+    const sourceTime = new Date(now.getTime() - 60_000);
+    const dealerships = ["d-sydney-central", "d-newcastle", "d-parramatta"];
+    data.inventory = Array.from({ length: 10_000 }, (_, index) => ({
+      vehicleId: `VR${String(index + 1).padStart(5, "0")}`,
+      dealershipId: dealerships[index % dealerships.length]!,
+      priceCents: 4_000_000,
+      stockedAt: new Date(now.getTime() - (index < 5_000 ? 80 : 160) * 86_400_000),
+      salesperson: null,
+      sourceTime,
+      fetchedAt: now,
+    }));
+    data.catalogue = data.inventory.map((row, index) => ({
+      vehicleId: row.vehicleId,
+      make: "Toyota",
+      model: index < 5_000 ? "RAV4" : "Corolla",
+      badge: null,
+      series: null,
+      specifications: {},
+      sourceVersion: "demo-v1",
+      sourceTime,
+      fetchedAt: now,
+    }));
+    const repository = new InMemoryRepository(data);
+    const orchestrator = new BoundedOrchestrator(repository, options());
     const result = await orchestrator.query({ question: "Which Toyota models are ageing fastest in NSW?", principalId: "head-office-analyst", scenario: "normal" });
     expect(result.status).toBe("answered");
     expect(result.plan?.steps.find((step) => step.source === "catalogue")?.mode).toBe("lazy_batch");
-    expect(result.metrics.slice(0, 2).map((metric) => metric.label)).toEqual(["Toyota Camry", "Toyota Corolla"]);
+    expect(result.plan?.steps.every((step) => step.maxRows === 10_000)).toBe(true);
+    expect(result.sources.map((source) => source.rowCount)).toEqual([10_000, 10_000]);
+    expect(result.metrics.slice(0, 2).map((metric) => metric.label)).toEqual(["Toyota Corolla", "Toyota RAV4"]);
     expect(repository.calls).toMatchObject({ inventory: 1, valuation: 0, catalogue: 1 });
+
+    data.inventory.push({ ...data.inventory[0]!, vehicleId: "VR10001" });
+    const oversizedRepository = new InMemoryRepository(data);
+    const oversized = await new BoundedOrchestrator(oversizedRepository, options()).query({ question: "Which Toyota models are ageing fastest in NSW?", principalId: "head-office-analyst", scenario: "normal" });
+    expect(oversized.status).toBe("refused");
+    expect(oversized.sources[0]?.error?.code).toBe("budget_exceeded");
+    expect(oversized.metrics).toEqual([]);
+    expect(oversizedRepository.calls.catalogue).toBe(0);
   });
 
   it("routes ambiguity to clarification without source execution", async () => {
@@ -69,6 +103,9 @@ describe("bounded graph golden paths", () => {
     expect(result.sources.find((source) => source.source === "valuation")?.freshness.classification).toBe("stale");
     expect(result.validation.checks.find((check) => check.name === "required_sources")?.passed).toBe(false);
     expect(result.answer).toBeNull();
+    expect(result.metrics).toEqual([]);
+    expect(result.evidence).toEqual([]);
+    expect(result.timingsMs.analytics).toBeUndefined();
   });
 
   it("refuses explicitly stale inventory while the normal path stays deterministic", async () => {
@@ -79,6 +116,8 @@ describe("bounded graph golden paths", () => {
     expect(result.sources[0]?.freshness).toMatchObject({ classification: "stale", ageSeconds: 360, maxAgeSeconds: 300 });
     expect(result.validation.checks.find((check) => check.name === "required_sources")?.passed).toBe(false);
     expect(result.answer).toBeNull();
+    expect(result.metrics).toEqual([]);
+    expect(result.evidence).toEqual([]);
   });
 
   it("refuses forbidden scope before any source call", async () => {
@@ -111,6 +150,8 @@ describe("bounded graph golden paths", () => {
     const result = await orchestrator.query({ question: "Which Toyota models are ageing fastest in NSW?", principalId: "head-office-analyst", scenario: "catalogue-timeout" });
     expect(result.status).toBe("refused");
     expect(result.sources.find((source) => source.source === "catalogue")?.error?.code).toBe("timeout");
+    expect(result.metrics).toEqual([]);
+    expect(result.evidence).toEqual([]);
   });
 
   it("refuses an ordinary out-of-scope dealership before retrieval", async () => {

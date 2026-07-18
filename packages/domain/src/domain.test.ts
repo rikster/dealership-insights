@@ -29,6 +29,8 @@ describe("deterministic domain", () => {
     expect(buildApprovedPlan(interpretation("stock_ageing", { minDaysOnLot: 60 })).steps.map((step) => step.source)).toEqual(["inventory"]);
     expect(buildApprovedPlan(interpretation("market_pricing", { minPercentAboveMarket: 10 })).steps.map((step) => step.source)).toEqual(["inventory", "valuation"]);
     expect(buildApprovedPlan(interpretation("regional_model_ageing", { make: "Toyota" })).steps).toContainEqual(expect.objectContaining({ source: "catalogue", mode: "lazy_batch" }));
+    expect(buildApprovedPlan(interpretation("regional_model_ageing", { make: "Toyota" })).steps.every((step) => step.maxRows === 10_000)).toBe(true);
+    expect(domainConfig().maxRows).toBe(10_000);
   });
 
   it("calculates exact stock-ageing count", () => {

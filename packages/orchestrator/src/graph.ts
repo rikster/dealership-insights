@@ -94,7 +94,9 @@ export const GRAPH_MERMAID = `flowchart TD
   interpretQuestion -->|unsupported/invalid| refuse --> finalise
   interpretQuestion --> resolveAndAuthoriseScope
   resolveAndAuthoriseScope -->|forbidden| refuse
-  resolveAndAuthoriseScope --> buildExecutionPlan --> executeSources --> calculateFacts --> validateFacts
+  resolveAndAuthoriseScope --> buildExecutionPlan --> executeSources
+  executeSources -->|unsafe required source| refuse
+  executeSources --> calculateFacts --> validateFacts
   validateFacts -->|unsafe| refuse
   validateFacts --> composeAnswer --> validateAnswer --> finalise --> end((END))`;
 
@@ -181,6 +183,13 @@ export class BoundedOrchestrator {
         else { valuationRows = result.value.result.rows as ValuationRow[]; sources.push(result.value.result.meta); }
       });
       let sourceCallsUsed = state.sourceCallsUsed + immediateSteps.length;
+      let validation = runFactValidation([], [], [], sources);
+      if (!validation.passed) {
+        return {
+          inventoryRows, valuationRows, catalogueRows, sources, sourceCallsUsed, validation,
+          timings: { ...state.timings, sources: Math.max(0, this.now().getTime() - started) },
+        };
+      }
       const catalogueStep = plan.steps.find((step) => step.source === "catalogue");
       if (catalogueStep && sources.find((source) => source.source === "inventory" && !source.error)) {
         if (sourceCallsUsed + 1 > this.config.maxSourceCalls) throw new Error("Source-call budget exceeded");
@@ -190,7 +199,8 @@ export class BoundedOrchestrator {
           catalogueRows = result.rows; sources.push(result.meta);
         } catch (error) { sources.push(failedSource("catalogue", catalogueStep.required, error, this.now(), this.config)); }
       }
-      return { inventoryRows, valuationRows, catalogueRows, sources, sourceCallsUsed, timings: { ...state.timings, sources: Math.max(0, this.now().getTime() - started) } };
+      validation = runFactValidation([], [], [], sources);
+      return { inventoryRows, valuationRows, catalogueRows, sources, sourceCallsUsed, validation, timings: { ...state.timings, sources: Math.max(0, this.now().getTime() - started) } };
     };
 
     const calculateFacts = async (state: GraphState) => {
@@ -284,7 +294,7 @@ export class BoundedOrchestrator {
       .addConditionalEdges("interpretQuestion", (state) => state.interpretation?.needsClarification ? "needsClarification" : state.refusalReason || state.interpretation?.intent === "unsupported" ? "refuse" : "resolveAndAuthoriseScope")
       .addConditionalEdges("resolveAndAuthoriseScope", (state) => state.refusalReason ? "refuse" : "buildExecutionPlan")
       .addEdge("buildExecutionPlan", "executeSources")
-      .addEdge("executeSources", "calculateFacts")
+      .addConditionalEdges("executeSources", (state) => state.validation?.passed ? "calculateFacts" : "refuse")
       .addEdge("calculateFacts", "validateFacts")
       .addConditionalEdges("validateFacts", (state) => state.validation?.passed ? "composeAnswer" : "refuse")
       .addEdge("composeAnswer", "validateAnswer")

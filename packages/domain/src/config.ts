@@ -6,6 +6,8 @@ export interface DomainConfig {
   maxEvidence: number;
 }
 
+export const DEFAULT_MAX_SOURCE_ROWS = 10_000;
+
 function positiveInteger(value: string | undefined, fallback: number): number {
   const parsed = Number(value ?? fallback);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
@@ -16,7 +18,7 @@ export function domainConfig(): DomainConfig {
     inventoryMaxAgeSeconds: positiveInteger(process.env.INVENTORY_MAX_AGE_SECONDS, 2_592_000),
     valuationMaxAgeSeconds: positiveInteger(process.env.VALUATION_MAX_AGE_SECONDS, 2_592_000),
     maxSourceCalls: 6,
-    maxRows: 5_000,
+    maxRows: DEFAULT_MAX_SOURCE_ROWS,
     maxEvidence: 50,
   };
 }

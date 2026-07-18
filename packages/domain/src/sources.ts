@@ -37,17 +37,25 @@ function envelope<T extends { sourceTime: Date }>(source: SourceName, rows: T[],
 }
 
 export class SourceAdapterError extends Error {
-  constructor(readonly source: SourceName, readonly code: "timeout" | "unavailable", message: string) { super(message); }
+  constructor(readonly source: SourceName, readonly code: "timeout" | "unavailable" | "invalid_data" | "budget_exceeded", message: string) { super(message); }
+}
+
+function assertWithinRowBudget(source: SourceName, rowCount: number, maxRows: number): void {
+  if (rowCount > maxRows) {
+    throw new SourceAdapterError(source, "budget_exceeded", `Required ${source} scope exceeds the ${maxRows.toLocaleString()}-row safety limit`);
+  }
 }
 
 export async function readInventory(repository: AutoGrabRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<InventoryRow>> {
-  let rows = await repository.getInventory(scope, { signal, maxRows: config.maxRows });
+  let rows = await repository.getInventory(scope, { signal, maxRows: config.maxRows + 1 });
+  assertWithinRowBudget("inventory", rows.length, config.maxRows);
   if (scenario === "stale-inventory") rows = rows.map((row) => ({ ...row, sourceTime: new Date(now.getTime() - (config.inventoryMaxAgeSeconds + 60) * 1_000) }));
   return envelope("inventory", rows, true, now, config);
 }
 
 export async function readValuations(repository: AutoGrabRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<ValuationRow>> {
-  let rows = await repository.getValuations(scope, null, { signal, maxRows: config.maxRows });
+  let rows = await repository.getValuations(scope, null, { signal, maxRows: config.maxRows + 1 });
+  assertWithinRowBudget("valuation", rows.length, config.maxRows);
   if (scenario === "stale-valuation") rows = rows.map((row) => ({ ...row, sourceTime: new Date(now.getTime() - (config.valuationMaxAgeSeconds + 60) * 1_000) }));
   return envelope("valuation", rows, true, now, config);
 }

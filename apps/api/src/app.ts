@@ -31,11 +31,11 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
 
   app.get("/v1/demo/principals", async () => (await repository.listPrincipals()).map(({ id, name, description }) => ({ id, name, description })));
   app.get("/v1/demo/scenarios", async () => [
-    { id: "normal", label: "Normal", description: "Sources within the demo freshness policy and authorised scope", production: false },
-    { id: "stale-inventory", label: "Stale inventory", description: "Required inventory is older than its demo threshold", production: false },
-    { id: "stale-valuation", label: "Stale valuation", description: "Required valuation is older than its demo threshold", production: false },
-    { id: "catalogue-timeout", label: "Catalogue timeout", description: "The lazy catalogue batch fails at its adapter boundary", production: false },
-    { id: "forbidden-site", label: "Forbidden site", description: "Scope authorisation fails before source access", production: false },
+    { id: "normal", label: "Fresh data", description: "Freshness checks passed", production: false },
+    { id: "stale-inventory", label: "Inventory needs refresh", description: "Inventory needs refreshing before analysis", production: false },
+    { id: "stale-valuation", label: "Valuation data needs refresh", description: "Valuation data needs refreshing before analysis", production: false },
+    { id: "catalogue-timeout", label: "Catalogue temporarily unavailable", description: "The catalogue source is temporarily unavailable", production: false },
+    { id: "forbidden-site", label: "Outside this role’s access", description: "The selected role cannot access the requested site", production: false },
   ]);
 
   app.post("/v1/query", async (request, reply) => {
