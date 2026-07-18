@@ -30,7 +30,7 @@ flowchart TD
   executeSources -->|unsafe required source| refuse
   executeSources --> calculateFacts --> validateFacts
   validateFacts -->|unsafe| refuse
-  validateFacts --> composeAnswer --> validateAnswer --> finalise --> end((END))
+  validateFacts --> composeAnswer --> validateAnswer --> finalise --> finish((END))
 ```
 
 There is no intentional loop. Invocation uses a recursion limit of 16, a default eight-second overall deadline, at most two planner attempts, at most six source calls, and a 10,000-row ceiling per source. Adapters request one sentinel row beyond the ceiling and explain when a scope is too large for a complete result instead of silently truncating it. Independent inventory and valuation reads use `Promise.allSettled`; catalogue is deferred until fresh inventory supplies unique vehicle IDs, then queried once as a controlled batch.
