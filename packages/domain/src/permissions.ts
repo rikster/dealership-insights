@@ -1,5 +1,5 @@
-import type { AuthorisedScope, Principal, Scenario } from "@autograb/contracts";
-import type { NameResolution } from "@autograb/db";
+import type { AuthorisedScope, Principal, Scenario } from "@dealership-insights/contracts";
+import type { NameResolution } from "@dealership-insights/db";
 
 export type ScopeDecision =
   | { authorised: true; scope: AuthorisedScope }

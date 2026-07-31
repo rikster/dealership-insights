@@ -1,4 +1,4 @@
-# AutoGrab dealership insights POC
+# Dealership Insights
 
 A reviewer-friendly TypeScript proof of concept exploring how dealership teams can ask natural-language questions and receive fast, evidence-backed answers.
 
@@ -105,7 +105,7 @@ pnpm dlx vercel --cwd apps/api --prod
 pnpm dlx vercel --cwd apps/web --prod
 ```
 
-The production deployment is live at [web-eight-ebon-57.vercel.app](https://web-eight-ebon-57.vercel.app), backed by [autograb-api.vercel.app](https://autograb-api.vercel.app). Production uses live Neon data and `MODEL_MODE=live` through the OpenAI Responses API. The deployed request deadline is 20 seconds (with a 30-second function cap) to accommodate live-model latency; the local default remains 8 seconds.
+The production deployment is live at [dealership-insights-web.vercel.app](https://dealership-insights-web.vercel.app), backed by [dealership-insights-api.vercel.app](https://dealership-insights-api.vercel.app). Production uses live Neon data and `MODEL_MODE=live` through the OpenAI Responses API. The deployed request deadline is 20 seconds (with a 30-second function cap) to accommodate live-model latency; the local default remains 8 seconds.
 
 ## Suggested five-minute walkthrough
 

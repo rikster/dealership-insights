@@ -1,4 +1,4 @@
-import type { AuthorisedScope, Evidence, Principal, PublicResponse } from "@autograb/contracts";
+import type { AuthorisedScope, Evidence, Principal, PublicResponse } from "@dealership-insights/contracts";
 import { and, eq, inArray } from "drizzle-orm";
 import type { Database } from "./client.js";
 import {
@@ -61,7 +61,7 @@ export interface AuditRecord {
   model: string;
 }
 
-export interface AutoGrabRepository {
+export interface DealershipInsightsRepository {
   listPrincipals(): Promise<Principal[]>;
   getPrincipal(id: string): Promise<Principal | null>;
   resolveScope(term: string, type: "dealership" | "region"): Promise<NameResolution | null>;
@@ -79,7 +79,7 @@ function checkSignal(signal: AbortSignal): void {
   if (signal.aborted) throw signal.reason ?? new Error("Request aborted");
 }
 
-export class NeonRepository implements AutoGrabRepository {
+export class NeonRepository implements DealershipInsightsRepository {
   constructor(private readonly db: Database) {}
 
   async listPrincipals(): Promise<Principal[]> {
@@ -166,7 +166,7 @@ export interface InMemoryRepositoryOptions {
   now?: () => Date;
 }
 
-export class InMemoryRepository implements AutoGrabRepository {
+export class InMemoryRepository implements DealershipInsightsRepository {
   readonly calls = { inventory: 0, valuation: 0, catalogue: 0, audit: 0 };
   readonly audits: AuditRecord[] = [];
   private readonly keepFresh: boolean;

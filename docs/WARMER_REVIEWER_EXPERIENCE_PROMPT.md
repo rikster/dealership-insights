@@ -1,4 +1,4 @@
-# AutoGrab reviewer-experience revision prompt
+# Dealership Insights reviewer-experience revision prompt
 
 Copy the prompt below into a Codex task opened at the repository root.
 
@@ -6,7 +6,7 @@ Copy the prompt below into a Codex task opened at the repository root.
 
 ## Prompt
 
-Revise this AutoGrab submission so it feels warmer, more customer-focused, collaborative, and product-minded while retaining its technical credibility, safeguards, and auditability.
+Revise this Dealership Insights submission so it feels warmer, more customer-focused, collaborative, and product-minded while retaining its technical credibility, safeguards, and auditability.
 
 The intended story is:
 
@@ -30,7 +30,7 @@ Work autonomously. Begin by inspecting the current repository, Git state, projec
 
 ### 1. Update the visual design
 
-Retain a dark identity for the hero and selected technical panels, but make the rest of the page feel like a polished, approachable AutoGrab product.
+Retain a dark identity for the hero and selected technical panels, but make the rest of the page feel like a polished, approachable Dealership Insights product.
 
 Use this palette as the design direction:
 
@@ -55,7 +55,7 @@ Use:
 
 Eyebrow:
 
-> AUTOGRAB AI SQUAD · DESIGN WALKTHROUGH
+> DEALERSHIP INSIGHTS · DESIGN WALKTHROUGH
 
 Heading:
 
@@ -159,7 +159,7 @@ Present an internal `refused` result contextually as “Not enough verified data
 
 Open with:
 
-> # AutoGrab dealership insights POC
+> # Dealership insights POC
 >
 > A reviewer-friendly TypeScript proof of concept exploring how dealership teams can ask natural-language questions and receive fast, evidence-backed answers.
 >
@@ -214,11 +214,11 @@ For the implementation plan:
 
 Update the repository’s reviewer email draft with the following. Use Markdown links if the file format supports them.
 
-Subject: AutoGrab design exercise – interactive POC
+Subject: Dealership Insights design exercise – interactive POC
 
 Hi Daniel and Shane,
 
-Thanks again for the thoughtful conversation and the opportunity to work through the AutoGrab design exercise.
+Thanks again for the thoughtful conversation and the opportunity to work through the Dealership Insights design exercise.
 
 Following our discussion, I continued exploring the idea and built a small optional proof of concept to make the architecture and trade-offs easier to explore. It shows how dealership teams could ask natural-language questions about stock ageing, market pricing and regional trends, while application code—not the language model—enforces role-based access, data freshness, calculations and supporting evidence.
 
@@ -228,10 +228,10 @@ The result view makes the resolved scope, data sources, freshness checks, calcul
 
 **Links**
 
-- [Live demonstration](https://web-eight-ebon-57.vercel.app/)
-- [Repository and reviewer guide](https://github.com/rikster/AutoGrabExercise)
-- [Architecture](https://github.com/rikster/AutoGrabExercise/blob/main/docs/ARCHITECTURE.md)
-- [Design decisions and trade-offs](https://github.com/rikster/AutoGrabExercise/blob/main/docs/DECISIONS.md)
+- [Live demonstration](https://dealership-insights-web.vercel.app/)
+- [Repository and reviewer guide](https://github.com/rikster/dealership-insights)
+- [Architecture](https://github.com/rikster/dealership-insights/blob/main/docs/ARCHITECTURE.md)
+- [Design decisions and trade-offs](https://github.com/rikster/dealership-insights/blob/main/docs/DECISIONS.md)
 
 A useful five-minute walkthrough is:
 
@@ -241,7 +241,7 @@ A useful five-minute walkthrough is:
 
 I also included a deterministic local mode and a focused automated test suite, allowing the workflow to be reviewed without production credentials.
 
-The POC is not intended as a complete AutoGrab product or a substitute for the architecture discussion. It is a concrete way to explore where a focused workflow provides useful speed and confidence, and how the design could evolve as real integrations, authentication and product requirements are introduced.
+The POC is not intended as a complete Dealership Insights product or a substitute for the architecture discussion. It is a concrete way to explore where a focused workflow provides useful speed and confidence, and how the design could evolve as real integrations, authentication and product requirements are introduced.
 
 I enjoyed working through the problem and would be very happy to discuss the decisions, alternatives and possible next steps.
 

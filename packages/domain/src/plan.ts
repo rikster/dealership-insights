@@ -1,4 +1,4 @@
-import type { ExecutionPlan, InterpretedQuestion } from "@autograb/contracts";
+import type { ExecutionPlan, InterpretedQuestion } from "@dealership-insights/contracts";
 import { DEFAULT_MAX_SOURCE_ROWS } from "./config.js";
 
 export function buildApprovedPlan(question: InterpretedQuestion): ExecutionPlan {

@@ -16,8 +16,8 @@ import {
   type QueryRequest,
   type SourceResult,
   type Validation,
-} from "@autograb/contracts";
-import type { AutoGrabRepository, CatalogueRow, InventoryRow, ValuationRow } from "@autograb/db";
+} from "@dealership-insights/contracts";
+import type { DealershipInsightsRepository, CatalogueRow, InventoryRow, ValuationRow } from "@dealership-insights/db";
 import {
   authoriseScope,
   buildApprovedPlan,
@@ -33,7 +33,7 @@ import {
   validateAnswerEvidence,
   validateFacts as runFactValidation,
   type DomainConfig,
-} from "@autograb/domain";
+} from "@dealership-insights/domain";
 import { createModelGateway, type ModelGateway } from "./model.js";
 
 const GraphStateSchema = z.object({
@@ -107,7 +107,7 @@ export class BoundedOrchestrator {
   private readonly requestTimeoutMs: number;
   private readonly graph: ReturnType<typeof this.buildGraph>;
 
-  constructor(private readonly repository: AutoGrabRepository, options: OrchestratorOptions = {}) {
+  constructor(private readonly repository: DealershipInsightsRepository, options: OrchestratorOptions = {}) {
     this.model = options.model ?? createModelGateway();
     this.config = options.config ?? domainConfig();
     this.now = options.now ?? (() => new Date());

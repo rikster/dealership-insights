@@ -1,5 +1,5 @@
-import type { AuthorisedScope, Freshness, Scenario, SourceName, SourceResult } from "@autograb/contracts";
-import type { AutoGrabRepository, CatalogueRow, InventoryRow, ValuationRow } from "@autograb/db";
+import type { AuthorisedScope, Freshness, Scenario, SourceName, SourceResult } from "@dealership-insights/contracts";
+import type { DealershipInsightsRepository, CatalogueRow, InventoryRow, ValuationRow } from "@dealership-insights/db";
 import type { DomainConfig } from "./config.js";
 
 export interface SourceEnvelope<T> {
@@ -46,21 +46,21 @@ function assertWithinRowBudget(source: SourceName, rowCount: number, maxRows: nu
   }
 }
 
-export async function readInventory(repository: AutoGrabRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<InventoryRow>> {
+export async function readInventory(repository: DealershipInsightsRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<InventoryRow>> {
   let rows = await repository.getInventory(scope, { signal, maxRows: config.maxRows + 1 });
   assertWithinRowBudget("inventory", rows.length, config.maxRows);
   if (scenario === "stale-inventory") rows = rows.map((row) => ({ ...row, sourceTime: new Date(now.getTime() - (config.inventoryMaxAgeSeconds + 60) * 1_000) }));
   return envelope("inventory", rows, true, now, config);
 }
 
-export async function readValuations(repository: AutoGrabRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<ValuationRow>> {
+export async function readValuations(repository: DealershipInsightsRepository, scope: AuthorisedScope, scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<ValuationRow>> {
   let rows = await repository.getValuations(scope, null, { signal, maxRows: config.maxRows + 1 });
   assertWithinRowBudget("valuation", rows.length, config.maxRows);
   if (scenario === "stale-valuation") rows = rows.map((row) => ({ ...row, sourceTime: new Date(now.getTime() - (config.valuationMaxAgeSeconds + 60) * 1_000) }));
   return envelope("valuation", rows, true, now, config);
 }
 
-export async function readCatalogue(repository: AutoGrabRepository, scope: AuthorisedScope, vehicleIds: string[], scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<CatalogueRow>> {
+export async function readCatalogue(repository: DealershipInsightsRepository, scope: AuthorisedScope, vehicleIds: string[], scenario: Scenario, signal: AbortSignal, now: Date, config: DomainConfig): Promise<SourceEnvelope<CatalogueRow>> {
   if (scenario === "catalogue-timeout") throw new SourceAdapterError("catalogue", "timeout", "Demo fault: catalogue batch timed out");
   const rows = await repository.getCatalogue(scope, [...new Set(vehicleIds)].slice(0, config.maxRows), { signal, maxRows: config.maxRows });
   return envelope("catalogue", rows, true, now, config);

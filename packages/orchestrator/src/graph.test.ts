@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { InMemoryRepository, makeDemoData } from "@autograb/db";
+import { InMemoryRepository, makeDemoData } from "@dealership-insights/db";
 import { BoundedOrchestrator } from "./graph.js";
 import { MockModelGateway } from "./model.js";
 import type { ModelGateway } from "./model.js";

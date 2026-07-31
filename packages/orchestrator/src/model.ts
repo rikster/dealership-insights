@@ -10,8 +10,8 @@ import {
   type Fact,
   type InterpretedQuestion,
   type SourceResult,
-} from "@autograb/contracts";
-import { deterministicAnswer } from "@autograb/domain";
+} from "@dealership-insights/contracts";
+import { deterministicAnswer } from "@dealership-insights/domain";
 
 export interface AnswerBundle {
   scope: AuthorisedScope;
