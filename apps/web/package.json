@@ -1,5 +1,5 @@
 {
-  "name": "@autograb/web",
+  "name": "@dealership-insights/web",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@autograb/contracts": "workspace:*",
+    "@dealership-insights/contracts": "workspace:*",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",

@@ -115,14 +115,14 @@ All times are Australia/Sydney. Credential-dependent checks are explicitly disti
 - OpenAI: securely configured a replacement API key and adapted the structured planner schema so every strict JSON-schema property is required (nullable where semantically optional). A live smoke reached OpenAI but returned `429 insufficient_quota`; no billing changes were made. Local operation therefore remains in deterministic mock-model mode until API quota is available.
 - End-to-end smoke: refreshed Neon timestamps, then ran the reviewer market-pricing path through the browser at `http://localhost:3000`. The result was `answered`, reported 177 Sydney Central vehicles more than 10% above market, returned two fresh 1,000-row source envelopes, and passed required-source, numeric-invariant, and evidence-coverage checks. The forced stale-valuation path remained `refused`.
 - Final gate: lint passed; all six projects typechecked; 34/34 tests passed; the Next.js 16.2.10 production build and all TypeScript package/API builds passed.
-- Quota follow-up: after API credit was added, switched the ignored local `.env` to `MODEL_MODE=live`, restarted the AutoGrab API, and refreshed Neon freshness. Readiness reported live OpenAI + Neon. A real Responses API market-pricing run returned `answered`, identified 177 Sydney Central vehicles more than 10% above market, used two sources, and passed validation.
+- Quota follow-up: after API credit was added, switched the ignored local `.env` to `MODEL_MODE=live`, restarted the Dealership Insights API, and refreshed Neon freshness. Readiness reported live OpenAI + Neon. A real Responses API market-pricing run returned `answered`, identified 177 Sydney Central vehicles more than 10% above market, used two sources, and passed validation.
 
 ## Phase 10 — Vercel production deployment
 
 - Date: 2026-07-18 AEST.
-- Published Fastify at `https://autograb-api.vercel.app` with sensitive production Neon/OpenAI variables and explicit CORS.
+- Published Fastify at `https://dealership-insights-api.vercel.app` with sensitive production Neon/OpenAI variables and explicit CORS.
 - Added a repository-level Vercel handler and reproducible esbuild server bundle because Vercel's pnpm workspace tracer did not package private workspace source exports reliably.
-- Published Next.js at `https://web-eight-ebon-57.vercel.app` with `NEXT_PUBLIC_API_BASE_URL=https://autograb-api.vercel.app`.
+- Published Next.js at `https://dealership-insights-web.vercel.app` with `NEXT_PUBLIC_API_BASE_URL=https://dealership-insights-api.vercel.app`.
 - Disabled Vercel SSO deployment protection for both public demo projects.
 - Production readiness reports `modelMode: live` and `dataMode: neon`. A live production market-pricing query returned `answered` with 177 vehicles, two sources, passing validation, and a 6.194-second workflow time.
 - Production uses a 20-second application deadline and 30-second Vercel function cap after the original 8-second deadline proved too short for a cold live-model planner call.

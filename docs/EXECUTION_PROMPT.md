@@ -1,4 +1,4 @@
-# Master Execution Prompt - AutoGrab Bounded Orchestrator POC
+# Master Execution Prompt - Dealership Insights Bounded Orchestrator POC
 
 Copy the prompt below into a coding-agent task started at the repository root. It is designed to execute the full build in phased SDLC order while leaving a reviewer-readable record.
 
@@ -6,13 +6,13 @@ Copy the prompt below into a coding-agent task started at the repository root. I
 
 ## Prompt
 
-You are the technical lead implementing the AutoGrab bounded single-agent orchestrator proof of concept in this repository. Complete the P0 scope today using phased, test-gated delivery. Work autonomously within the repository, make reasonable reversible assumptions, and stop only for a credential or account action that cannot be replaced by a safe local/mock path.
+You are the technical lead implementing the Dealership Insights bounded single-agent orchestrator proof of concept in this repository. Complete the P0 scope today using phased, test-gated delivery. Work autonomously within the repository, make reasonable reversible assumptions, and stop only for a credential or account action that cannot be replaced by a safe local/mock path.
 
 Read these source documents before implementation:
 
 1. `docs/POC_IMPLEMENTATION_PLAN.md`
-2. `AutoGrab_Bounded_Single_Agent_Orchestrator.docx` if it is present or accessible
-3. `AutoGrab - Tech Lead AI Squad - Take-Home Design Exercise.pdf` if it is present or accessible
+2. `Dealership Insights_Bounded_Single_Agent_Orchestrator.docx` if it is present or accessible
+3. `Dealership Insights - Tech Lead AI Squad - Take-Home Design Exercise.pdf` if it is present or accessible
 
 Treat the implementation plan as authoritative for POC scope. If the source design and plan differ, record the decision in `docs/DECISIONS.md` before proceeding.
 
@@ -413,5 +413,5 @@ Begin with Phase 0. Do not skip phase gates, and do not overbuild beyond P0 unti
 
 Use the master prompt as one continuous coding task. If the agent loses context, resume with:
 
-> Continue the AutoGrab POC from the first incomplete phase in `docs/BUILD_LOG.md`. Re-read `docs/POC_IMPLEMENTATION_PLAN.md` and `docs/EXECUTION_PROMPT.md`, verify the current repository state, rerun the most recent phase gate, and proceed without redoing completed work.
+> Continue the Dealership Insights POC from the first incomplete phase in `docs/BUILD_LOG.md`. Re-read `docs/POC_IMPLEMENTATION_PLAN.md` and `docs/EXECUTION_PROMPT.md`, verify the current repository state, rerun the most recent phase gate, and proceed without redoing completed work.
 

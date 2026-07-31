@@ -1,4 +1,4 @@
-# Historical implementation plan — AutoGrab dealership insights POC
+# Historical implementation plan — Dealership insights POC
 
 Status: Completed; retained as a planning record  
 Target: one working day  
@@ -80,8 +80,8 @@ docs/
 
 Deploy the monorepo as two Vercel projects:
 
-- `autograb-poc-web`, root directory `apps/web`
-- `autograb-poc-api`, root directory `apps/api`
+- `dealership-insights-poc-web`, root directory `apps/web`
+- `dealership-insights-poc-api`, root directory `apps/api`
 
 The browser calls the API through `NEXT_PUBLIC_API_BASE_URL`. Configure explicit CORS for only the local web origin and deployed web URL. This keeps Next.js and Fastify concerns visible and avoids an unnecessary proxy hop.
 
@@ -442,7 +442,7 @@ Reviewer narrative: deployment preserves the same contracts and failure behaviou
 ### P2 - explicitly defer
 
 - Production authentication and database RLS integration.
-- Live AutoGrab source integrations.
+- Live Dealership Insights source integrations.
 - Real observability vendor integration.
 - Multi-agent workflows.
 - Chat memory, write actions, or automated remediation.

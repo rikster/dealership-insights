@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from "react";
 import Image from "next/image";
-import type { PublicResponse, Scenario } from "@autograb/contracts";
+import type { PublicResponse, Scenario } from "@dealership-insights/contracts";
 import { formatLocalDateTime, localizeDateTimesInText } from "./format-date";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3001";
@@ -275,7 +275,7 @@ export default function Home() {
       <header className="hero">
         <div className="hero-inner">
           <div className="hero-meta">
-            <p className="eyebrow">AUTOGRAB AI SQUAD · DESIGN WALKTHROUGH</p>
+            <p className="eyebrow">DEALERSHIP INSIGHTS · DESIGN WALKTHROUGH</p>
             <p>Dealership insights · Interactive prototype</p>
           </div>
           <div className="hero-grid">
@@ -567,14 +567,14 @@ export default function Home() {
           <h2 id="closing-heading">Built to support a working discussion</h2>
           <div className="closing-copy">
             <p>This prototype is designed for predictable behaviour, fresh data and inspectable answers.</p>
-            <p>The next design decision is where AutoGrab would benefit from greater flexibility—and where latency, cost or risk make a focused workflow the better choice.</p>
+            <p>The next design decision is where Dealership Insights would benefit from greater flexibility—and where latency, cost or risk make a focused workflow the better choice.</p>
           </div>
           <div className="closing-actions">
             <a href="#architecture">View architecture diagram</a>
             <a href="#decision-notes" onClick={(event) => revealDetail(event, "decision-notes")}>Read decision notes</a>
             <button type="button" onClick={exploreAnotherScenario}>Explore another scenario</button>
           </div>
-          <p className="author-signoff">Richard Hounslow · AutoGrab AI Squad take-home exercise</p>
+          <p className="author-signoff">Richard Hounslow · Dealership insights take-home exercise</p>
         </section>
       </div>
     </main>

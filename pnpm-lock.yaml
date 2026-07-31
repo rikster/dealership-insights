@@ -38,13 +38,13 @@ importers:
 
   apps/api:
     dependencies:
-      '@autograb/contracts':
+      '@dealership-insights/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
-      '@autograb/db':
+      '@dealership-insights/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@autograb/orchestrator':
+      '@dealership-insights/orchestrator':
         specifier: workspace:*
         version: link:../../packages/orchestrator
       '@fastify/cors':
@@ -72,7 +72,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@autograb/contracts':
+      '@dealership-insights/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
       next:
@@ -119,7 +119,7 @@ importers:
 
   packages/db:
     dependencies:
-      '@autograb/contracts':
+      '@dealership-insights/contracts':
         specifier: workspace:*
         version: link:../contracts
       '@neondatabase/serverless':
@@ -150,10 +150,10 @@ importers:
 
   packages/domain:
     dependencies:
-      '@autograb/contracts':
+      '@dealership-insights/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@autograb/db':
+      '@dealership-insights/db':
         specifier: workspace:*
         version: link:../db
       zod:
@@ -172,13 +172,13 @@ importers:
 
   packages/orchestrator:
     dependencies:
-      '@autograb/contracts':
+      '@dealership-insights/contracts':
         specifier: workspace:*
         version: link:../contracts
-      '@autograb/db':
+      '@dealership-insights/db':
         specifier: workspace:*
         version: link:../db
-      '@autograb/domain':
+      '@dealership-insights/domain':
         specifier: workspace:*
         version: link:../domain
       '@langchain/langgraph':

@@ -1,14 +1,14 @@
 {
-  "name": "@autograb/orchestrator",
+  "name": "@dealership-insights/orchestrator",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.ts" },
   "scripts": { "build": "tsc --noEmit", "typecheck": "tsc --noEmit", "test": "vitest run --passWithNoTests" },
   "dependencies": {
-    "@autograb/contracts": "workspace:*",
-    "@autograb/db": "workspace:*",
-    "@autograb/domain": "workspace:*",
+    "@dealership-insights/contracts": "workspace:*",
+    "@dealership-insights/db": "workspace:*",
+    "@dealership-insights/domain": "workspace:*",
     "@langchain/langgraph": "latest",
     "openai": "latest",
     "zod": "latest"

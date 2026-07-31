@@ -1,4 +1,4 @@
-import type { Evidence, Fact, Invariant, Metric, SourceResult, Validation } from "@autograb/contracts";
+import type { Evidence, Fact, Invariant, Metric, SourceResult, Validation } from "@dealership-insights/contracts";
 
 export function validateFacts(metrics: Metric[], facts: Fact[], evidence: Evidence[], sources: SourceResult[]): Validation {
   const knownEvidence = new Set(evidence.map((item) => item.id));

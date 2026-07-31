@@ -1,5 +1,5 @@
-import type { Evidence, Fact, InterpretedQuestion, Metric, SourceResult } from "@autograb/contracts";
-import type { CatalogueRow, InventoryRow, ValuationRow } from "@autograb/db";
+import type { Evidence, Fact, InterpretedQuestion, Metric, SourceResult } from "@dealership-insights/contracts";
+import type { CatalogueRow, InventoryRow, ValuationRow } from "@dealership-insights/db";
 
 export interface AnalyticsOutput {
   metrics: Metric[];

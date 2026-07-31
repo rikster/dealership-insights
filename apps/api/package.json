@@ -1,5 +1,5 @@
 {
-  "name": "@autograb/api",
+  "name": "@dealership-insights/api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,9 +11,9 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@autograb/contracts": "workspace:*",
-    "@autograb/db": "workspace:*",
-    "@autograb/orchestrator": "workspace:*",
+    "@dealership-insights/contracts": "workspace:*",
+    "@dealership-insights/db": "workspace:*",
+    "@dealership-insights/orchestrator": "workspace:*",
     "@fastify/cors": "latest",
     "fastify": "latest",
     "fastify-type-provider-zod": "latest",

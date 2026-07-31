@@ -1,5 +1,5 @@
 {
-  "name": "@autograb/db",
+  "name": "@dealership-insights/db",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "refresh-freshness": "tsx --env-file=../../.env src/refresh-freshness.ts"
   },
   "dependencies": {
-    "@autograb/contracts": "workspace:*",
+    "@dealership-insights/contracts": "workspace:*",
     "@neondatabase/serverless": "latest",
     "drizzle-orm": "latest",
     "zod": "latest"

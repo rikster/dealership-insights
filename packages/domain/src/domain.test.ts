@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { AuthorisedScope, InterpretedQuestion } from "@autograb/contracts";
-import { InMemoryRepository, makeDemoData } from "@autograb/db";
+import type { AuthorisedScope, InterpretedQuestion } from "@dealership-insights/contracts";
+import { InMemoryRepository, makeDemoData } from "@dealership-insights/db";
 import {
   authoriseScope,
   buildApprovedPlan,

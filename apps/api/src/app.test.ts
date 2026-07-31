@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { InMemoryRepository, makeDemoData } from "@autograb/db";
-import { MockModelGateway } from "@autograb/orchestrator";
+import { InMemoryRepository, makeDemoData } from "@dealership-insights/db";
+import { MockModelGateway } from "@dealership-insights/orchestrator";
 import { buildApp } from "./app.js";
 
 const apps: ReturnType<typeof buildApp>[] = [];
@@ -12,7 +12,7 @@ describe("operational endpoints", () => {
     apps.push(app);
     const response = await app.inject({ method: "GET", url: "/health" });
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual({ status: "ok", service: "autograb-api" });
+    expect(response.json()).toEqual({ status: "ok", service: "dealership-insights-api" });
   });
 
   it("reports credential-free readiness", async () => {

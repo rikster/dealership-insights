@@ -1,4 +1,4 @@
-import type { Answer, AuthorisedScope, Fact, SourceResult } from "@autograb/contracts";
+import type { Answer, AuthorisedScope, Fact, SourceResult } from "@dealership-insights/contracts";
 
 export function deterministicAnswer(scope: AuthorisedScope, facts: Fact[], sources: SourceResult[], caveats: string[]): Answer {
   const oldest = sources.flatMap((source) => source.sourceTime ? [source.sourceTime] : []).sort()[0];

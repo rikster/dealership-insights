@@ -1,5 +1,5 @@
 {
-  "name": "autograb-bounded-orchestrator",
+  "name": "dealership-insights",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.6.5",
@@ -7,18 +7,18 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "pnpm --parallel --filter @autograb/api --filter @autograb/web dev",
+    "dev": "pnpm --parallel --filter @dealership-insights/api --filter @dealership-insights/web dev",
     "build": "pnpm -r build",
-    "build:api:vercel": "pnpm --filter @autograb/api build && node scripts/build-api-vercel.mjs",
+    "build:api:vercel": "pnpm --filter @dealership-insights/api build && node scripts/build-api-vercel.mjs",
     "lint": "eslint .",
     "typecheck": "pnpm -r typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
     "replay": "tsx scripts/replay.ts",
-    "db:generate": "pnpm --filter @autograb/db generate",
-    "db:migrate": "pnpm --filter @autograb/db migrate",
-    "db:seed": "pnpm --filter @autograb/db seed",
-    "db:refresh-freshness": "pnpm --filter @autograb/db refresh-freshness"
+    "db:generate": "pnpm --filter @dealership-insights/db generate",
+    "db:migrate": "pnpm --filter @dealership-insights/db migrate",
+    "db:seed": "pnpm --filter @dealership-insights/db seed",
+    "db:refresh-freshness": "pnpm --filter @dealership-insights/db refresh-freshness"
   },
   "devDependencies": {
     "@eslint/js": "latest",

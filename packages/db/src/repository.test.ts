@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { AuthorisedScope } from "@autograb/contracts";
+import type { AuthorisedScope } from "@dealership-insights/contracts";
 import { InMemoryRepository, makeDemoData } from "./repository.js";
 
 const signal = new AbortController().signal;

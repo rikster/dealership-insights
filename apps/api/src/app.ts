@@ -1,13 +1,13 @@
 import cors from "@fastify/cors";
 import Fastify, { type FastifyInstance } from "fastify";
-import { ErrorResponseSchema, PublicResponseSchema, QueryRequestSchema } from "@autograb/contracts";
-import type { AutoGrabRepository } from "@autograb/db";
-import { createDatabase, InMemoryRepository, makeDemoData, NeonRepository } from "@autograb/db";
-import { BoundedOrchestrator, type ModelGateway } from "@autograb/orchestrator";
+import { ErrorResponseSchema, PublicResponseSchema, QueryRequestSchema } from "@dealership-insights/contracts";
+import type { DealershipInsightsRepository } from "@dealership-insights/db";
+import { createDatabase, InMemoryRepository, makeDemoData, NeonRepository } from "@dealership-insights/db";
+import { BoundedOrchestrator, type ModelGateway } from "@dealership-insights/orchestrator";
 
 export interface AppOptions {
   logger?: boolean;
-  repository?: AutoGrabRepository;
+  repository?: DealershipInsightsRepository;
   model?: ModelGateway;
 }
 
@@ -26,7 +26,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     methods: ["GET", "POST"],
   });
 
-  app.get("/health", async () => ({ status: "ok", service: "autograb-api" }));
+  app.get("/health", async () => ({ status: "ok", service: "dealership-insights-api" }));
   app.get("/ready", async () => ({ status: "ready", modelMode: process.env.MODEL_MODE ?? "mock", dataMode: process.env.DATABASE_URL ? "neon" : "memory" }));
 
   app.get("/v1/demo/principals", async () => (await repository.listPrincipals()).map(({ id, name, description }) => ({ id, name, description })));

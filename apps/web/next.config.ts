@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  transpilePackages: ["@autograb/contracts"],
+  transpilePackages: ["@dealership-insights/contracts"],
 };
 
 export default config;
